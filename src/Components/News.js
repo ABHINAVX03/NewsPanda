@@ -1,4 +1,4 @@
-import React, {useEffect, useState,useCallback} from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
 
 import NewsItem from './NewsItem'
 import Spinner from './Spinner';
@@ -26,14 +26,16 @@ const News = (props)=>{
         setTotalResults(parsedData.totalResults);
         setLoading(false);
         props.setProgress(100);
-    }, [page,props]);
-
-
+      }, [props, page]);
+      
+      useEffect(() => {
+        updateNews();
+      }, []);
+    
     useEffect(() => {
         document.title = `${capitalizeFirstLetter(props.category)} - NewsPanda`;
-        updateNews(); 
-    }, [props.category,updateNews])
-
+      }, [props.category]);
+      
 
     const fetchMoreData = async () => {   
         const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&page=${page+1}&pageSize=${props.pageSize}`;
